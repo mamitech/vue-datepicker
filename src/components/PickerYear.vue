@@ -37,6 +37,8 @@
 import pickerMixin from '~/mixins/pickerMixin'
 import { isYearDisabled } from '~/utils/DisabledDatesUtils'
 
+const YEAR_RANGE = 12
+
 export default {
   name: 'DatepickerYearView',
   mixins: [
@@ -53,14 +55,14 @@ export default {
       // set up a new date object to the beginning of the current 'page'7
       const dObj = this.useUtc
         ? new Date(
-          Date.UTC(Math.floor(d.getUTCFullYear() / 10) * 10, d.getUTCMonth(), d.getUTCDate()),
+          Date.UTC(Math.floor(d.getUTCFullYear() / YEAR_RANGE) * YEAR_RANGE, d.getUTCMonth(), d.getUTCDate()),
         )
         : new Date(
           Math.floor(
-            d.getFullYear() / 10,
-          ) * 10, d.getMonth(), d.getDate(), d.getHours(), d.getMinutes(),
+            d.getFullYear() / YEAR_RANGE,
+          ) * YEAR_RANGE, d.getMonth(), d.getDate(), d.getHours(), d.getMinutes(),
         )
-      for (let i = 0; i < 10; i += 1) {
+      for (let i = 0; i < YEAR_RANGE; i += 1) {
         years.push({
           year: this.utils.getFullYear(dObj),
           timestamp: dObj.getTime(),
@@ -76,8 +78,8 @@ export default {
      * @return {String}
      */
     getPageDecade() {
-      const decadeStart = Math.floor(this.utils.getFullYear(this.pageDate) / 10) * 10
-      const decadeEnd = decadeStart + 9
+      const decadeStart = Math.floor(this.utils.getFullYear(this.pageDate) / YEAR_RANGE) * YEAR_RANGE
+      const decadeEnd = decadeStart + (YEAR_RANGE - 1)
       const { yearSuffix } = this.translation
       return `${decadeStart} - ${decadeEnd}${yearSuffix}`
     },
@@ -108,7 +110,7 @@ export default {
      */
     previousDecade() {
       if (!this.isPreviousDisabled()) {
-        this.changeYear(-10)
+        this.changeYear(-YEAR_RANGE)
         return true
       }
       return false
@@ -121,15 +123,15 @@ export default {
       if (!this.disabledDates || !this.disabledDates.to) {
         return false
       }
-      return Math.floor(this.utils.getFullYear(this.disabledDates.to) / 10) * 10
-        >= Math.floor(this.utils.getFullYear(this.pageDate) / 10) * 10
+      return Math.floor(this.utils.getFullYear(this.disabledDates.to) / YEAR_RANGE) * YEAR_RANGE
+        >= Math.floor(this.utils.getFullYear(this.pageDate) / YEAR_RANGE) * YEAR_RANGE
     },
     /**
      * Increments the decade
      */
     nextDecade() {
       if (!this.isNextDisabled()) {
-        this.changeYear(10)
+        this.changeYear(YEAR_RANGE)
         return true
       }
       return false
@@ -142,8 +144,8 @@ export default {
       if (!this.disabledDates || !this.disabledDates.from) {
         return false
       }
-      return Math.ceil(this.utils.getFullYear(this.disabledDates.from) / 10) * 10
-        <= Math.ceil(this.utils.getFullYear(this.pageDate) / 10) * 10
+      return Math.ceil(this.utils.getFullYear(this.disabledDates.from) / YEAR_RANGE) * YEAR_RANGE
+        <= Math.ceil(this.utils.getFullYear(this.pageDate) / YEAR_RANGE) * YEAR_RANGE
     },
 
     /**
