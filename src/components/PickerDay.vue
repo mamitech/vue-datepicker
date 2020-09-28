@@ -34,21 +34,28 @@
         </span>
       </div>
       <div class="date-wrapper">
-        <template v-if="blankDays > 0">
+        <template>
           <span
-            v-for="d in blankDays"
-            :key="d.timestamp"
-            class="cell day blank"
-          />
-          <span
-            v-for="day in days"
-            :key="day.timestamp"
-            :class="dayClasses(day)"
-            class="cell day"
-            @click="selectDate(day)"
+            v-for="day in prevMonthDays"
+            :key="day.key"
+            class="cell day prevmonthday disabled"
             v-html="dayCellContent(day)"
           />
         </template>
+        <span
+          v-for="day in days"
+          :key="day.timestamp"
+          :class="dayClasses(day)"
+          class="cell day"
+          @click="selectDate(day)"
+          v-html="dayCellContent(day)"
+        />
+        <span
+          v-for="day in nextMonthDays"
+          :key="day.key"
+          class="cell day nextmonthday disabled"
+          v-html="dayCellContent(day)"
+        />
       </div>
     </div>
     <slot name="calendarFooterDay" />
@@ -101,15 +108,32 @@ export default {
      * Used to show amount of empty cells before the first in the day calendar layout
      * @return {Number}
      */
-    blankDays() {
+    prevMonthDays() {
       const d = this.pageDate
       const dObj = this.useUtc
         ? new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), 1))
         : new Date(d.getFullYear(), d.getMonth(), 1, d.getHours(), d.getMinutes())
+
+      const daysInPrevMonth = this.utils.daysInMonth(
+        this.utils.getFullYear(dObj), this.utils.getMonth(dObj) - 1,
+      )
+
+      let totalLastDays = this.utils.getDay(dObj)
+
       if (this.mondayFirst) {
-        return this.utils.getDay(dObj) > 0 ? this.utils.getDay(dObj) - 1 : 6
+        totalLastDays = this.utils.getDay(dObj) > 0 ? this.utils.getDay(dObj) - 1 : 6
       }
-      return this.utils.getDay(dObj)
+
+      const days = []
+
+      for (let i = daysInPrevMonth - totalLastDays; i <= daysInPrevMonth; i += 1) {
+        days.push({
+          date: i,
+          key: `${this.utils.getMonth(dObj) - 1}-${i}`,
+        })
+      }
+
+      return days
     },
     /**
      * Set an object with all days inside the month
@@ -141,6 +165,31 @@ export default {
         })
         this.utils.setDate(dObj, this.utils.getDate(dObj) + 1)
       }
+      return days
+    },
+    /**
+     * Returns the day number of the week after the last date of current month
+     */
+    nextMonthDays() {
+      const d = this.pageDate
+      const dObj = this.useUtc
+        ? new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), 1))
+        : new Date(d.getFullYear(), d.getMonth(), 1, d.getHours(), d.getMinutes())
+
+      const totalRenderedDates = this.prevMonthDays.length + this.days.length
+      const totalRow = Math.ceil(totalRenderedDates / 7)
+      const totalCompleteCells = totalRow * 7
+      const totalMissingCells = totalCompleteCells - totalRenderedDates
+
+      const days = []
+
+      for (let i = 1; i <= totalMissingCells; i += 1) {
+        days.push({
+          date: i,
+          key: `${this.utils.getMonth(dObj) + 1}-${i}`,
+        })
+      }
+
       return days
     },
     /**
