@@ -23,15 +23,17 @@
         name="prevIntervalBtn"
       />
     </PickerHeader>
-    <span
-      v-for="month in months"
-      :key="month.timestamp"
-      :class="{'selected': month.isSelected, 'disabled': month.isDisabled}"
-      class="cell month"
-      @click.stop="selectMonth(month)"
-    >
-      {{ month.month }}
-    </span>
+    <div class="date-wrapper">
+      <span
+        v-for="month in months"
+        :key="month.timestamp"
+        :class="{'selected': month.isSelected, 'disabled': month.isDisabled}"
+        class="cell month"
+        @click.stop="selectMonth(month)"
+      >
+        {{ month.month }}
+      </span>
+    </div>
     <slot name="calendarFooterMonth" />
   </div>
 </template>

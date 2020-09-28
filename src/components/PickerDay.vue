@@ -24,30 +24,32 @@
       />
     </PickerHeader>
     <div :class="isRtl ? 'flex-rtl' : ''">
-      <span
-        v-for="d in daysOfWeek"
-        :key="d.timestamp"
-        class="cell day-header"
-      >
-        {{ d }}
-      </span>
-      <template v-if="blankDays > 0">
+      <div class="day-header-wrapper">
         <span
-          v-for="d in blankDays"
+          v-for="d in daysOfWeek"
           :key="d.timestamp"
-          class="cell day blank"
-        />
-        <!--    TODO change grid system setup with for example flex to remove the magic    -->
-        <!--    the comment arrows in the next two lines are necessary magic to remove the WS   -->
-      </template><!--
-      --><span
-      v-for="day in days"
-      :key="day.timestamp"
-      :class="dayClasses(day)"
-      class="cell day"
-      @click="selectDate(day)"
-      v-html="dayCellContent(day)"
-    />
+          class="cell day-header"
+        >
+          {{ d }}
+        </span>
+      </div>
+      <div class="date-wrapper">
+        <template v-if="blankDays > 0">
+          <span
+            v-for="d in blankDays"
+            :key="d.timestamp"
+            class="cell day blank"
+          />
+          <span
+            v-for="day in days"
+            :key="day.timestamp"
+            :class="dayClasses(day)"
+            class="cell day"
+            @click="selectDate(day)"
+            v-html="dayCellContent(day)"
+          />
+        </template>
+      </div>
     </div>
     <slot name="calendarFooterDay" />
   </div>

@@ -19,15 +19,17 @@
       />
     </PickerHeader>
 
-    <span
-      v-for="year in years"
-      :key="year.timestamp"
-      :class="{ 'selected': year.isSelected, 'disabled': year.isDisabled }"
-      class="cell year"
-      @click.stop="selectYear(year)"
-    >
-      {{ year.year }}
-    </span>
+    <div class="date-wrapper">
+      <span
+        v-for="year in years"
+        :key="year.timestamp"
+        :class="{ 'selected': year.isSelected, 'disabled': year.isDisabled }"
+        class="cell year"
+        @click.stop="selectYear(year)"
+      >
+        {{ year.year }}
+      </span>
+    </div>
     <slot name="calendarFooterYear" />
   </div>
 </template>
