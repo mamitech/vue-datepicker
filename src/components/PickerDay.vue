@@ -20,10 +20,12 @@
       <slot slot="prevIntervalBtn" name="prevIntervalBtn" />
     </PickerHeader>
     <div :class="{ 'flex-rtl': isRtl }">
-      <span v-for="day in daysOfWeek" :key="day" class="day-header">
-        {{ day }}
-      </span>
-      <div ref="cells">
+      <div class="day-header-wrapper">
+        <span v-for="day in daysOfWeek" :key="day" class="day-header">
+          {{ day }}
+        </span>
+      </div>
+      <div ref="cells" class="date-wrapper">
         <span
           v-for="cell in cells"
           :key="cell.timestamp"

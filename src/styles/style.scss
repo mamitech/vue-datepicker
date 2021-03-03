@@ -115,6 +115,11 @@
     width: inherit;
   }
 
+  .date-wrapper {
+    display: inline-flex;
+    flex-wrap: wrap;
+  }
+
   .cell {
     border: 1px solid transparent;
     display: inline-block;

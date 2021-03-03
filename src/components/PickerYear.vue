@@ -15,7 +15,7 @@
       <slot slot="nextIntervalBtn" name="nextIntervalBtn" />
       <slot slot="prevIntervalBtn" name="prevIntervalBtn" />
     </PickerHeader>
-    <div ref="cells">
+    <div ref="cells" class="date-wrapper">
       <span
         v-for="cell in cells"
         :key="cell.timestamp"
