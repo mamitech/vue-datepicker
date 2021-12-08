@@ -1,5 +1,5 @@
 /*
-* @sum.cumo/vue-datepicker v3.1.0
+* @sum.cumo/vue-datepicker v3.2.0
 * (c) 2018-2021 sum.cumo GmbH
 * Released under the Apache-2.0 License.
 */
