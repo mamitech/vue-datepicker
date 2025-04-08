@@ -26,8 +26,7 @@
     "LICENSE"
   ],
   "scripts": {
-    "prepare": "npm run clear && npm run build",
-    "build": "npm run build:app && npm run build:locale",
+    "build": "npm run clear && npm run build:app && npm run build:locale",
     "build:app": "rollup -c ./scripts/build.js",
     "build:locale": "babel-node scripts/build-locale.js",
     "clear": "rm -rf dist/*",
